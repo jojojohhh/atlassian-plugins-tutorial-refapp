@@ -40,6 +40,13 @@
             <artifactId>atlassian-plugins-osgi-javaconfig</artifactId>
             <version>${osgi.javaconfig.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.atlassian.plugin</groupId>
+            <artifactId>atlassian-spring-scanner-annotation</artifactId>
+            <version>2.2.3</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- OSGi Java Config dependencies -->
         <dependency>
             <groupId>org.apache.felix</groupId>
