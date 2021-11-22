@@ -5,6 +5,7 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.auth.LoginUriProvider;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
+import com.atlassian.templaterenderer.TemplateRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,17 @@ public class MyPluginServlet extends HttpServlet {
 
     private final UserManager userManager;
     private final LoginUriProvider loginUriProvider;
+    private final TemplateRenderer templateRenderer;
 
     @Autowired
-    public MyPluginServlet(@ComponentImport UserManager userManager,@ComponentImport LoginUriProvider loginUriProvider) {
+    public MyPluginServlet(@ComponentImport UserManager userManager,@ComponentImport LoginUriProvider loginUriProvider, @ComponentImport TemplateRenderer templateRenderer) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
+        this.templateRenderer = templateRenderer;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
         UserProfile user = userManager.getRemoteUser(req);
         boolean isUserAdmin = userManager.isSystemAdmin(user.getUserKey());
         String username = user.getUsername();
@@ -43,8 +45,7 @@ public class MyPluginServlet extends HttpServlet {
             redirectToLogin(req, res);
             return;
         }
-        res.setContentType("text/html");
-        res.getWriter().write("<html><body>Hello! You did it.</body></html>");
+        templateRenderer.render("admin.vm", res.getWriter());
     }
 
     private void redirectToLogin(HttpServletRequest req, HttpServletResponse res) throws IOException {
