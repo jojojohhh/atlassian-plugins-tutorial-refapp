@@ -4,7 +4,7 @@
     <meta name="decorator" content="atl.admin">
 </head>
 <body>
-<form id="admin" class="aui">
+<form id="admin" class="aui" action="" method="POST">
     <div class="field-group">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" class="text">
