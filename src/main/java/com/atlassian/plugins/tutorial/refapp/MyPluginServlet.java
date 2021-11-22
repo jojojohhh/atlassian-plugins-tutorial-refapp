@@ -1,5 +1,6 @@
 package com.atlassian.plugins.tutorial.refapp;
 
+import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsDevService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.auth.LoginUriProvider;
 import com.atlassian.sal.api.user.UserManager;
@@ -7,6 +8,7 @@ import com.atlassian.sal.api.user.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 
+@ExportAsDevService
+@Component
 public class MyPluginServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(MyPluginServlet.class);
 
-    @ComponentImport private final UserManager userManager;
-    @ComponentImport private final LoginUriProvider loginUriProvider;
+    private final UserManager userManager;
+    private final LoginUriProvider loginUriProvider;
 
     @Autowired
-    public MyPluginServlet(UserManager userManager, LoginUriProvider loginUriProvider) {
+    public MyPluginServlet(@ComponentImport UserManager userManager,@ComponentImport LoginUriProvider loginUriProvider) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
     }
